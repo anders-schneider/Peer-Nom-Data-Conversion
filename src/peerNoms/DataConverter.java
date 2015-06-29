@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class DataConverter {
 	
 	int dataRows, dataCols, bffCols;
-	String[] colHeads, rowHeads;
+	String[] colHeads, sNames, sIds;
 	String[][] cleanData, bffData;
 	
 	Student[] students;
@@ -56,14 +56,12 @@ public class DataConverter {
 		dataCols = (totalCols - firstCol) / 2;
 		bffCols = (lastBFFCol + 1 - firstBFFCol) / 2;
 		
-		System.out.println("firstBFFCol: " + firstBFFCol);
-		System.out.println("lastBFFCol: " + lastBFFCol);
-		
-		rowHeads = new String[dataRows];
+		sNames = new String[dataRows];
+		sIds = new String[dataRows];
 		for (int i = 0; i < dataRows; i++) {
 			String[] row = lines[firstRow + i].split(",");
 			if (row.length < 4) continue;
-			rowHeads[i] = createRowHeader(row);
+			saveNameId(row, i);
 		}
 		
 		colHeads = new String[dataCols];
@@ -111,7 +109,7 @@ public class DataConverter {
 		ArrayList<String> categories = new ArrayList<String>();
 		
 		for (int i = 0; i < dataRows; i++) {
-			Student s = new Student(rowHeads[i]);
+			Student s = new Student(sNames[i], sIds[i]);
 			for (int j = 0; j < dataCols; j++) {
 				String category = cleanData[i][j];
 				if (!"".equals(category)) {
@@ -150,7 +148,7 @@ public class DataConverter {
 			totalExtraCols += maxExtras[i];
 		}
 		
-		int outCols = 1 + maxBFFs + cats.length + totalExtraCols;
+		int outCols = 2 + maxBFFs + cats.length + totalExtraCols;
 		
 		outData = new String[dataRows + 1][outCols];
 		
@@ -160,9 +158,10 @@ public class DataConverter {
 			}
 		}
 		
-		outData[0][0] = "Student: Last Name; First Name (ID)";
+		outData[0][0] = "Student: Last Name; First Name";
+		outData[0][1] = "Student ID";
 		
-		int j = 1;
+		int j = 2;
 		for (int h = 0; h < maxBFFs; h++) {
 			outData[0][j] = "Best Friend";
 			j++;
@@ -181,7 +180,8 @@ public class DataConverter {
 		for (int i = 0; i < dataRows; i++) {
 			Student s = students[i];
 			outData[i + 1][0] = s.name;
-			int m = 1;
+			outData[i + 1][1] = s.id;
+			int m = 2;
 			int bffsLeft = maxBFFs;
 			for (String bff : s.bffs) {
 				outData[i + 1][m] = bff;
@@ -244,8 +244,9 @@ public class DataConverter {
 		return result;
 	}
 	
-	private String createRowHeader(String[] row) {
-		return row[2].trim() + "; " + row[1].trim() + " (" + row[3].trim() + ")";
+	private void saveNameId (String[] row, int index) {
+		sNames[index] = row[2].trim() + "; " + row[1].trim();
+		sIds[index] = row[3].trim();
 	}
 	
 	private String createColHeader(String uglyName) {

@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Student {
-	String name;
+	String name, id;
 	HashMap<String, String> noms;
 	HashMap<String, ArrayList<String>> extras;
 	List<String> bffs;
 	
-	public Student(String name) {
+	public Student(String name, String id) {
 		this.name = name;
+		this.id = id;
 		noms = new HashMap<String, String>();
 		extras = new HashMap<String, ArrayList<String>>();
 		bffs = new ArrayList<String>();
