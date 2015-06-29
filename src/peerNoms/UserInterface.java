@@ -15,8 +15,16 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 
 public class UserInterface {
 
-	public static void main(String[] args) {
-		DataConverter dc = new DataConverter();
+	//TODO Comment everything
+	//TODO Test everything!
+	
+	public static void main(String[] args) {		
+		JOptionPane.showMessageDialog(null, "This program converts survey response "
+				+ "data from students into a condensed, human-readable format.\n\n"
+				+ "You'll first be prompted to select the data file.\n\n"
+				+ "Note that it must be a .csv file!",
+				"Welcome!",
+				JOptionPane.DEFAULT_OPTION);
 		
 		String[] input;
 		
@@ -31,9 +39,13 @@ public class UserInterface {
 			}
 		}
 		
+		DataConverter dc = new DataConverter();
 		dc.parseInput(input);
 		
 		String[] output = dc.generateOutput();
+		
+		JOptionPane.showMessageDialog(null, "Awesome - now you just need to select a "
+				+ "file location to save the output to and you'll be all done!");
 		
 		// And save it to an output file
 		while (true) {
@@ -48,11 +60,26 @@ public class UserInterface {
 		}
 	}
 	
+	/**
+	 * Displays an error message to the user based on the input Exception.
+	 * 
+	 * @param e An exception to display to the user
+	 */
 	private static void displayError(Exception e) {
 		JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
 				JOptionPane.ERROR_MESSAGE);
 	}
-
+	
+	/**
+	 * Returns an array of String representing the lines of input from a
+	 * file specified by the user. A file chooser opens, and the user must
+	 * select a valid CSV file. If any other file type is chosen, an
+	 * IOException is thrown.
+	 * 
+	 * @return An array of strings representing the lines of input
+	 * @throws IOException If there is an error accessing a specific file
+	 * @throws CannotProceed If the user quits from the load dialog
+	 */
 	private static String[] load() throws IOException, CannotProceed {
 		ArrayList<String> lines = new ArrayList<String>(600);
 		

@@ -3,26 +3,27 @@ package peerNoms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Student {
 	String name, id;
-	HashMap<String, String> noms;
-	HashMap<String, ArrayList<String>> extras;
-	List<String> bffs;
+	Map<String, String> noms;
+	Map<String, ArrayList<String>> extras;
+	List<String> friends;
 	
 	public Student(String name, String id) {
 		this.name = name;
 		this.id = id;
 		noms = new HashMap<String, String>();
 		extras = new HashMap<String, ArrayList<String>>();
-		bffs = new ArrayList<String>();
+		friends = new ArrayList<String>();
 	}
 	
-	public void addBFF(String bff) {
-		if (!bffs.contains(bff)) bffs.add(bff);
+	public void addFriend(String friend) {
+		if (!friends.contains(friend)) friends.add(friend);
 	}
 	
-	public void add(String category, String name) {
+	public void addNom(String category, String name) {
 		if (!noms.containsKey(category)) {
 			noms.put(category, name);
 		} else if (extras.containsKey(category)) {
