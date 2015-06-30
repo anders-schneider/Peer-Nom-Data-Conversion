@@ -13,10 +13,15 @@ import javax.swing.JOptionPane;
 
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 
+/**
+ * This class handles all interaction with the user: instructions to the user,
+ * input from the user in the form of a data file to parse, and output to the
+ * user in the form of a formatted CSV file.
+ * 
+ * @author Anders Schneider
+ *
+ */
 public class UserInterface {
-
-	//TODO Comment everything
-	//TODO Test everything!
 	
 	public static void main(String[] args) {		
 		JOptionPane.showMessageDialog(null, "This program converts survey response "
@@ -28,6 +33,7 @@ public class UserInterface {
 		
 		String[] input;
 		
+		// Read in the input file
 		while (true) {
 			try {
 				input = load();
@@ -39,15 +45,15 @@ public class UserInterface {
 			}
 		}
 		
+		// Process the input data
 		DataConverter dc = new DataConverter();
 		dc.parseInput(input);
-		
 		String[] output = dc.generateOutput();
 		
 		JOptionPane.showMessageDialog(null, "Awesome - now you just need to select a "
 				+ "file location to save the output to and you'll be all done!");
 		
-		// And save it to an output file
+		// Save the data to a user-specified file
 		while (true) {
 			try {
 				saveOutput(output);
@@ -96,7 +102,6 @@ public class UserInterface {
                 // Check to make sure the file is a CSV file
                 int len = fileName.length();	                
                 if (!".csv".equals(fileName.substring(len - 4, len))) {
-                	// Otherwise throw an exception
                 	throw new IOException("The selected file is not a .csv file. Try again!");
                 }
                 
