@@ -8,12 +8,13 @@ import java.util.Map;
 public class DataConverter {
 	
 	int numStudents;
-	String[] nomColHeads;
+	String[] nomColHeads, friendColHeads;
 	String[] categories;
 	String[][] nomData, friendData;
 	Student[] students;
 	
 	DataConverter() {
+	
 	}
 	
 	void parseInput(String[] lines) {
@@ -118,19 +119,19 @@ public class DataConverter {
 		String[] headers = headerRow.split(",");
 		findColMarkers(headers, hi);
 		
-		hi.nomCols = (hi.totalCols - hi.firstNomCol) / 2;
-		
-		generateNomColHeads(headers, hi);
-
 		hi.friendCols = (hi.lastFriendCol + 1 - hi.firstFriendCol) / 2;
+		friendColHeads = generateColHeads(headers, hi.friendCols, hi.firstFriendCol); 
+		
+		hi.nomCols = (hi.totalCols - hi.firstNomCol) / 2;
+		nomColHeads = generateColHeads(headers, hi.nomCols, hi.firstNomCol);
 	}
 	
-	private void generateNomColHeads(String[] headers, 
-												HeaderInformation hi) {
-		nomColHeads = new String[hi.nomCols];
-		for (int i = 0; i < hi.nomCols; i++) {
-			nomColHeads[i] = createColHeader(headers[hi.firstNomCol + 2 * i]);
+	private static String[] generateColHeads(String[] headers, int numCols, int firstCol) {
+		String[] result = new String[numCols];
+		for (int i = 0; i < numCols; i++) {
+			result[i] = createColHeader(headers[firstCol + 2 * i]);
 		}
+		return result;
 	}
 	
 	private void findColMarkers(String[] headers, HeaderInformation hi) {
@@ -230,7 +231,7 @@ public class DataConverter {
 		for (int j = 0; j < friendCols; j++) {
 			String friendIndicator = friendRow[j];
 			if (!"".equals(friendIndicator)) {
-				s.addFriend(nomColHeads[j]);
+				s.addFriend(friendColHeads[j]);
 			}
 		}
 	}
