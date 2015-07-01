@@ -51,7 +51,9 @@ public class UserInterface {
 		String[] output = dc.generateOutput();
 		
 		JOptionPane.showMessageDialog(null, "Awesome - now you just need to select a "
-				+ "file location to save the output to and you'll be all done!");
+				+ "file location to save the output to and you'll be all done!" 
+				+ "\n\nAlso: you'll make your life easier if your file name ends with"
+				+ "'.csv'");
 		
 		// Save the data to a user-specified file
 		while (true) {

@@ -21,7 +21,7 @@ public class DataConverter {
 	String[][] nomData, friendData; // Nomination and friend data, respectively
 	Student[] students;
 	
-	//TODO Comment all of Data Converter class
+	//TODO Add error handling - if something that should be there isn't there, throw (and catch) a detailed error!
 	
 	/**
 	 * Takes in the CSV lines of input, records specifics about the input
@@ -101,15 +101,15 @@ public class DataConverter {
 	 * @param row An array of cells representing a single data row
 	 * @return A Student with all information in the row recorded
 	 */
-	private static Student createStudent (String[] row) {
+	private static Student createStudent (String[] row, HeaderInformation hi) {
 		// If this row contains no first or last name, return a dummy Student
 		if (row[1].trim().length() == 0 || row[2].trim().length() == 0) {
 			return new Student("", "");
 		}
 		
 		// Otherwise save the Student's name and ID and return it
-		String name = row[2].trim() + "; " + row[1].trim();
-		String id = row[3].trim();
+		String name = row[hi.firstFriendCol - 2].trim() + "; " + row[hi.firstFriendCol - 3].trim();
+		String id = row[hi.firstFriendCol - 1].trim();
 		
 		return new Student(name, id);
 	}
@@ -128,6 +128,7 @@ public class DataConverter {
 		
 		// Search for the front of the student's name (bookended by ".-")
 		int first = last;
+		System.out.println(uglyName);
 		while (!".-".equals(uglyName.substring(first - 2, first))) first--;
 		
 		return uglyName.substring(first, last).trim();
@@ -228,12 +229,18 @@ public class DataConverter {
 	 * @param hi The HeaderInformation object where the header details are recorded
 	 */
 	private void findColMarkers(String[] headers, HeaderInformation hi) {
+		for (int i = 0; i < 10; i++) {
+			System.out.println(headers[i]);
+		}
+		
 		hi.totalCols = headers.length;
 		
-		// First friend column begins with the String '"Team'
-		hi.firstFriendCol = findFirstInstance(headers, "\"Team");
+		// First friend column begins after last name, first name, and ID columns
+		hi.firstFriendCol = findFirstInstance(headers, "Please") + 3;
 		
-		// Last peer nomination column begins with 'Timing'
+		System.out.println("First friend column: " + hi.firstFriendCol);
+		
+		// Last friend column begins just before 'Timing' column
 		int firstNomCol = findFirstInstance(headers, "Timing");
 		hi.lastFriendCol = firstNomCol - 1;
 		
@@ -251,9 +258,11 @@ public class DataConverter {
 	 * @param hi The HeaderInformation object where row specs are recorded
 	 */
 	private void processRowTitles(String[] lines, HeaderInformation hi) {
-		int firstRow = 0;
-		while (!"ResponseID".equals(lines[firstRow].substring(0, 10))) firstRow++;
-		firstRow++;
+//		int firstRow = 0;
+//		while (!"ResponseID".equals(lines[firstRow].substring(0, 6))) firstRow++;
+//		firstRow++;
+		
+		int firstRow = 2;
 		
 		hi.firstRow = firstRow;
 		hi.totalRows = lines.length;
@@ -273,7 +282,7 @@ public class DataConverter {
 		Student[] result = new Student[numStudents];
 		for (int i = 0; i < numStudents; i++) {
 			String[] row = lines[hi.firstRow + i].split(",", -1);
-			result[i] = createStudent(row);
+			result[i] = createStudent(row, hi);
 		}
 		return result;
 	}
