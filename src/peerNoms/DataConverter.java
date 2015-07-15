@@ -18,7 +18,7 @@ public class DataConverter {
 	int numStudents;
 	String[] nomColHeads, friendColHeads; // Nomination and friend column headers
 	String[] categories; // Nomination categories
-	String[][] nomData, friendData; // Nomination and friend data, respectively
+	String[][] nomData, friendData; // Nomination and friend data, separated
 	Student[] students;
 	
 	//TODO Add error handling - if something that should be there isn't there, throw (and catch) a detailed error!
@@ -257,11 +257,7 @@ public class DataConverter {
 	 * @param lines An array of Strings representing the input data
 	 * @param hi The HeaderInformation object where row specs are recorded
 	 */
-	private void processRowTitles(String[] lines, HeaderInformation hi) {
-//		int firstRow = 0;
-//		while (!"ResponseID".equals(lines[firstRow].substring(0, 6))) firstRow++;
-//		firstRow++;
-		
+	private void processRowTitles(String[] lines, HeaderInformation hi) {		
 		int firstRow = 2;
 		
 		hi.firstRow = firstRow;

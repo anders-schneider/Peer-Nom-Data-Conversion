@@ -172,12 +172,6 @@ public class DataConverterTest {
 	}
 	
 	@Test
-	public void testProcessStudentLine() {
-		//TODO Test
-		fail("Not yet implemented");
-	}
-	
-	@Test
 	public void testRecordFriendsAndCategories() {
 		//TODO Test
 		fail("Not yet implemented");
