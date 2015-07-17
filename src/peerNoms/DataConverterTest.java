@@ -52,9 +52,28 @@ public class DataConverterTest {
 	}
 	
 	@Test
-	public void testCreateStudent() {
-		//TODO Test
-		fail("Not yet implemented");
+	public void testCreateStudent() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Class[] cArg = new Class[1];
+		cArg[0] = String.class;
+		Method createStudent = dc.getClass().getDeclaredMethod("createStudent", cArg);
+		createStudent.setAccessible(true);
+		
+		// FIGURE OUT WHAT IS GOING THAT MAKES THIS THROW AN ERROR
+		
+		HeaderInformation hi = new HeaderInformation();
+		hi.firstFriendCol = 4;
+		
+		String[] row1 = {"R_beo98pS2bzrDT2h", "Anders", "Schneider", "60201", "", "", "1", "0", "", "", "", "", "3.66", "4.567", "", "", "2", "0"};
+		Student expected1 = new Student("Anders Schneider", "60201");
+		Student actual1 = (Student) createStudent.invoke(dc, row1, hi);
+		
+		assertTrue(expected1.equals(actual1));
+		
+		String[] row2 = {"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""};
+		Student expected2 = new Student("", "");
+		Student actual2 = (Student) createStudent.invoke(dc, row2, hi);
+		
+		assertTrue(expected2.equals(actual2));
 	}
 	
 	@Test

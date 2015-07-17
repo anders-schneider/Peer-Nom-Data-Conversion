@@ -41,4 +41,16 @@ public class Student {
 		if (!extras.containsKey(category)) return 0;
 		return extras.get(category).size();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Student)) return false;
+		Student other = (Student) o;
+		return this.name == other.name && this.id == other.id;
+	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode() * id.hashCode();
+	}
 }
